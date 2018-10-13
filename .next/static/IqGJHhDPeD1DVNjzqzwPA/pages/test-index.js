@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[5],{265:function(n,e,t){__NEXT_REGISTER_PAGE("/test-index",function(){return n.exports=t(266),{page:n.exports.default}})},266:function(n,e,t){"use strict";t.r(e),t.d(e,"default",function(){return o});var u=t(8),r=t.n(u);function o(){return r.a.createElement("div",null,r.a.createElement("h1",null,"TEST"))}}},[[265,1,0]]]);
