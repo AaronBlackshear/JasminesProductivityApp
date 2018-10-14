@@ -1,19 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { testFunc } from '../redux/reducers/testReducer'
+import Calendar from '../components/Calendar'
 
 class Index extends React.Component {
   render () {
-    console.log(this.props)
     return (
       <div>
-        <h1>HOME PAGE</h1>
-        <button onClick={() => this.props.testFunc()}>Click Me!</button>
+        <Calendar />
       </div>
     )
   }
 }
 
-const mapStateToProps = state => ({ ...state })
+const mapStateToProps = state => ({ ...state.userReducer })
 
-export default connect(mapStateToProps, { testFunc })(Index)
+export default connect(mapStateToProps)(Index)
