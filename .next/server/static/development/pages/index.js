@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -108,6 +108,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(antd__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _css_calendar_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../css/calendar.css */ "./css/calendar.css");
 /* harmony import */ var _css_calendar_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_css_calendar_css__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _utils_changeCalendarNames__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/changeCalendarNames */ "./utils/changeCalendarNames.js");
 var _jsxFileName = "/Users/aaronblackshear/PersonalProjects/jasmines-productiviy-app/components/Calendar.js";
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -132,6 +133,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
 var CalendarComponent =
 /*#__PURE__*/
 function (_Component) {
@@ -144,18 +146,23 @@ function (_Component) {
   }
 
   _createClass(CalendarComponent, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      Object(_utils_changeCalendarNames__WEBPACK_IMPORTED_MODULE_3__["default"])();
+    }
+  }, {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 8
+          lineNumber: 13
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(antd__WEBPACK_IMPORTED_MODULE_1__["Calendar"], {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 9
+          lineNumber: 14
         },
         __self: this
       }));
@@ -263,7 +270,30 @@ var mapStateToProps = function mapStateToProps(state) {
 
 /***/ }),
 
-/***/ 10:
+/***/ "./utils/changeCalendarNames.js":
+/*!**************************************!*\
+  !*** ./utils/changeCalendarNames.js ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var changeCalendarNames = function changeCalendarNames() {
+  document.getElementsByClassName('ant-fullcalendar-column-header-inner')[0].innerHTML = 'Sunday';
+  document.getElementsByClassName('ant-fullcalendar-column-header-inner')[1].innerHTML = 'Monday';
+  document.getElementsByClassName('ant-fullcalendar-column-header-inner')[2].innerHTML = 'Tuesday';
+  document.getElementsByClassName('ant-fullcalendar-column-header-inner')[3].innerHTML = 'Wednesday';
+  document.getElementsByClassName('ant-fullcalendar-column-header-inner')[4].innerHTML = 'Thursday';
+  document.getElementsByClassName('ant-fullcalendar-column-header-inner')[5].innerHTML = 'Friday';
+  document.getElementsByClassName('ant-fullcalendar-column-header-inner')[6].innerHTML = 'Saturday';
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (changeCalendarNames);
+
+/***/ }),
+
+/***/ 3:
 /*!******************************!*\
   !*** multi ./pages/index.js ***!
   \******************************/

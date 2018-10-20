@@ -13,41 +13,13 @@
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
-    "/notepad": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
-    ],
-    "/my-profile": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
-    ],
-    "/this-week": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
-    ],
-    "/blog/articles": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
-    ],
-    "/blog/videos": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
-    ],
-    "/blog/inspiration": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
-    ],
-    "/blog/diy": [
-      "static/runtime/webpack.js",
-      "static/runtime/main.js"
-    ],
     "/index": [
       "static/runtime/webpack.js",
       "static/css/styles.chunk.css",
       "static/chunks/styles.js",
       "static/runtime/main.js"
     ],
-    "/chat-room": [
+    "/this-week": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
