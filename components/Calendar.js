@@ -28,8 +28,10 @@ class CalendarComponent extends Component {
 
     return (
       <div>
-        { currentMonth }
-        { currentYear }
+        <h1>
+          <span>{ currentMonth }</span>
+          <span>{ currentYear }</span>
+        </h1>
         <Calendar onChange={() => setTimeout(() => this.changeMonthName(), 0)} />
       </div>
     )
