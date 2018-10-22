@@ -786,12 +786,12 @@ function (_App) {
 /*!***************************************!*\
   !*** ./redux/reducers/userReducer.js ***!
   \***************************************/
-/*! exports provided: testFunc, default */
+/*! exports provided: loginUser, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "testFunc", function() { return testFunc; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loginUser", function() { return loginUser; });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "axios");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
@@ -800,7 +800,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 var base_url = 'http://localhost:3001/api';
-var initialState = {};
+var initialState = {
+  user: {},
+  loggedIn: false,
+  loading: false
+};
 var LOGIN_USER = 'LOGIN_USER';
 
 function userReducer() {
@@ -808,17 +812,30 @@ function userReducer() {
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
   switch (action.type) {
-    case "".concat(LOGIN_USER):
-      return _objectSpread({}, state);
+    case "".concat(LOGIN_USER, "_PENDING"):
+      return _objectSpread({}, state, {
+        loading: true
+      });
+
+    case "".concat(LOGIN_USER, "_FULFILLED"):
+      return _objectSpread({}, state, {
+        user: action.payload.data[0],
+        loading: false,
+        loggedIn: true
+      });
 
     default:
       return _objectSpread({}, state);
   }
 }
 
-var testFunc = function testFunc() {
+var loginUser = function loginUser(username, password) {
   return {
-    type: LOGIN_USER
+    type: LOGIN_USER,
+    payload: axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(base_url + '/login_user', {
+      username: username,
+      password: password
+    })
   };
 };
 /* harmony default export */ __webpack_exports__["default"] = (userReducer);
@@ -842,13 +859,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _reducers_userReducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./reducers/userReducer */ "./redux/reducers/userReducer.js");
 
 
- // var store = createStore(testReducer, applyMiddleware(promiseMiddleware()))
-// export default store;
+ // export default store;
 
 function initializeStore() {
   return Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])({
     userReducer: _reducers_userReducer__WEBPACK_IMPORTED_MODULE_2__["default"]
-  }), Object(redux__WEBPACK_IMPORTED_MODULE_0__["applyMiddleware"])(redux_promise_middleware__WEBPACK_IMPORTED_MODULE_1___default.a));
+  }), Object(redux__WEBPACK_IMPORTED_MODULE_0__["applyMiddleware"])(redux_promise_middleware__WEBPACK_IMPORTED_MODULE_1___default()()));
 }
 
 /***/ }),

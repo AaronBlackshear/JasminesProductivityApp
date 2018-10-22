@@ -1,17 +1,22 @@
 require('dotenv').config()
 const express = require('express')
 const session = require('express-session')
+const massive = require('massive')
 const { json } = require('body-parser')
 const cors = require('cors')
 const PORT = 3001
 
 const app = express()
 
-const testCtrl = require('./controllers/test_controller')
-const { SESSION_SECRET } = process.env
+const userCtrl = require('./controllers/user_controller')
+const { SESSION_SECRET, DATABASE_URL } = process.env
 
-app.use(cors())
 app.use(json())
+app.use(cors())
+
+massive(DATABASE_URL)
+  .then(db => app.set('db', db))
+  .catch(err => console.log('MASSIVE ERROR: ', err))
 
 app.use(
   session({
@@ -24,7 +29,7 @@ app.use(
   })
 )
 
-app.get('/api/test', testCtrl.test)
+app.post('/api/login_user', userCtrl.loginUser)
 
 app.listen(PORT, () =>
   console.log(`Listening on port ${PORT || 'Port Not Defined'}!`)

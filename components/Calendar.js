@@ -1,38 +1,52 @@
 import React, { Component } from 'react'
 import { Calendar } from 'antd'
+import axios from 'axios'
 import '../css/calendar.css'
-import changeCalendarNames from '../utils/changeCalendarNames';
-import getMonthName from '../utils/getMonthName';
+import changeCalendarNames from '../utils/changeCalendarNames'
+import getMonthName from '../utils/getMonthName'
 
 class CalendarComponent extends Component {
   state = {
     currentYear: null,
     currentMonth: null
-  };
+  }
 
-  componentDidMount() {
-    changeCalendarNames();
-    this.changeMonthName();
-    document.getElementsByClassName('ant-radio-group-outline')[0].style.display = 'none'
+  componentDidMount () {
+    changeCalendarNames()
+    this.changeMonthName()
+    document.getElementsByClassName('ant-radio-group-outline')[
+      0
+    ].style.display =
+      'none'
   }
 
   changeMonthName = () => {
     this.setState({
-        currentMonth: getMonthName().month,
-        currentYear: getMonthName().year
-      });
+      currentMonth: getMonthName().month,
+      currentYear: getMonthName().year
+    })
+  }
+
+  handleReq = () => {
+    axios
+      .get('http://localhost:3001/api/test')
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err))
   }
 
   render () {
-    const { currentMonth, currentYear } = this.state;
+    const { currentMonth, currentYear } = this.state
 
     return (
       <div>
         <h1>
-          <span>{ currentMonth }</span>
-          <span>{ currentYear }</span>
+          <span>{currentMonth}</span>
+          <span>{currentYear}</span>
+          <button onClick={this.handleReq}>Click me!</button>
         </h1>
-        <Calendar onChange={() => setTimeout(() => this.changeMonthName(), 0)} />
+        <Calendar
+          onChange={() => setTimeout(() => this.changeMonthName(), 0)}
+        />
       </div>
     )
   }
