@@ -2,30 +2,21 @@ import App, { Container } from 'next/app'
 import React from 'react'
 import withReduxStore from '../lib/with-redux-store'
 import { Provider } from 'react-redux'
-import { Layout } from 'antd'
-import Sidebar from '../components/Sidebar'
+import Index from '../components/index';
 import '../css/index.css'
-
-const { Content } = Layout
+import '../css/main.css'
+import '../css/override.css'
 
 class MyApp extends App {
   render () {
     const { Component, pageProps, reduxStore } = this.props
+
     return (
       <Container>
         <Provider store={reduxStore}>
-
-          {/* CONTENT + SIDEBAR LAYOUT */}
-          <Layout>
-            <Sidebar />
-
-            {/* MAIN CONTENT */}
-            <Content>
-              <Component {...pageProps} />
-            </Content>
-
-          </Layout>
-
+          <Index>
+            <Component {...pageProps} />
+          </Index>
         </Provider>
       </Container>
     )

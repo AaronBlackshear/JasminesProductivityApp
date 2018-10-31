@@ -14,7 +14,34 @@ function userReducer (state = initialState, action) {
     case `${LOGIN_USER}_PENDING`:
       return { ...state, loading: true }
     case `${LOGIN_USER}_FULFILLED`:
-      return { ...state, user: action.payload.data[0], loading: false, loggedIn: true }
+      // window.location.pathname = '/';
+      const { 
+        username,
+        email,
+        password,
+        authTokenOne,
+        authTokenTwo,
+        userIdentifier,
+        emailVerified,
+      } = action.payload.data[0];
+
+      localStorage.setItem('user', JSON.stringify({
+        username,
+        email,
+        password,
+        authTokenOne,
+        authTokenTwo,
+        userIdentifier,
+        emailVerified,
+      }))
+
+      return {
+        ...state,
+        user: action.payload.data[0],
+        loading: false,
+        loggedIn: true
+      }
+
     default:
       return { ...state }
   }

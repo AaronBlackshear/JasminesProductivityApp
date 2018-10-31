@@ -21185,4 +21185,35 @@ li.ant-tree-treenode-disabled > .ant-tree-node-content-wrapper:hover {
 /*# sourceMappingURL=antd.css.map*/
 
 
+/* LOGIN PAGE */
+.login-container {
+  width: 80%;
+  max-width: 400px;
+  margin: auto;
+  margin-top: 5%;
+  padding: 20px 25px;
+  background-color: white;
+  border-radius: 7px;
+}
+/* LOGIN PAGE */
+.sidebar-icon {
+    font-size: 22px;
+}
+
+.ant-layout {
+    min-height: 100vh !important;
+}
+
+.ant-layout-sider-trigger {
+    background: white;
+    color: #002140;
+    border-top: 1px solid #002140;
+}
+
+.calendar-bg {
+    background-image: url('https://images.pexels.com/photos/844297/pexels-photo-844297.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') !important;
+    background-position: center !important;
+    background-size: cover !important;
+}
+
 /*# sourceMappingURL=styles.chunk.css.map*/
