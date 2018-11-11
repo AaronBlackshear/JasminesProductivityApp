@@ -21,13 +21,10 @@ class Index extends Component {
 
     return (
       <Fragment>
-        {/* CONTENT + SIDEBAR LAYOUT */}
         <Layout>
-          {/* {auth.user.authTokenOne && <Sidebar />} */}
           {auth.user &&
             ((user.authTokenOne || auth.user.authTokenOne) && <Sidebar />)}
 
-          {/* MAIN CONTENT */}
           <Content>
             {this.props.children}
           </Content>

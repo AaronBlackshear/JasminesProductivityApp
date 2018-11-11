@@ -26,18 +26,5 @@ export default function LoadingScreen() {
     <LoadingContainer>
       <Spin size="large" />
     </LoadingContainer>
-    // <div style={{
-    //   display: 'flex',
-    //   justifyContent: 'center',
-    //   alignItems: 'center',
-    //   width: '100vw',
-    //   height: '100vh',
-    //   position: 'absolute',
-    //   top: 0,
-    //   left: 0,
-    //   zIndex: 100,
-    // }}>
-    //   <Spin size="large" />
-    // </div>
   )
 }
