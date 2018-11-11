@@ -27,13 +27,6 @@ class CalendarComponent extends Component {
     })
   }
 
-  handleReq = () => {
-    axios
-      .get('http://localhost:3001/api/test')
-      .then(res => console.log(res.data))
-      .catch(err => console.log(err))
-  }
-
   render () {
     const { currentMonth, currentYear } = this.state
 
@@ -42,7 +35,6 @@ class CalendarComponent extends Component {
         <h1>
           <span>{currentMonth}</span>
           <span>{currentYear}</span>
-          <button onClick={this.handleReq}>Click me!</button>
         </h1>
         <Calendar
           onChange={() => setTimeout(() => this.changeMonthName(), 0)}
