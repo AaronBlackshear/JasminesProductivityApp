@@ -9,15 +9,10 @@ class LoginForm extends Component {
   state = {
     email: '',
     password: '',
-    remember: false
   }
 
   handleUserInput = (state, input) => {
     this.setState({ [state]: input })
-  }
-
-  handleCheckbox = () => {
-    this.setState(prevProps => ({ remember: !prevProps.remember }))
   }
 
   handleSubmit = () => {
@@ -27,7 +22,7 @@ class LoginForm extends Component {
   }
 
   render () {
-    const { email, password, remember } = this.state
+    const { email, password } = this.state
 
     return (
       <div className="login-container">
@@ -48,12 +43,6 @@ class LoginForm extends Component {
               placeholder='Password'
               value={password}
             />
-          </FormItem>
-
-          <FormItem>
-            <Checkbox onClick={this.handleCheckbox} checked={remember}>
-              Remember me?
-            </Checkbox>
           </FormItem>
 
           <FormItem>

@@ -21207,7 +21207,7 @@ li.ant-tree-treenode-disabled > .ant-tree-node-content-wrapper:hover {
 .ant-layout-sider-trigger {
     background: white;
     color: #002140;
-    border-top: 1px solid #002140;
+    /* border-top: 1px solid #002140; */
 }
 
 .calendar-bg {

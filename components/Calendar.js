@@ -1,43 +1,69 @@
 import React, { Component } from 'react'
 import { Calendar } from 'antd'
-import axios from 'axios'
+import moment from 'moment';
+import EventsModal from './CalendarComponents/EventsModal'
 import '../css/calendar.css'
 import changeCalendarNames from '../utils/changeCalendarNames'
-import getMonthName from '../utils/getMonthName'
+
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+]
 
 class CalendarComponent extends Component {
   state = {
     currentYear: null,
-    currentMonth: null
+    currentMonth: null,
+    currentDate: null,
+    selectedDate: null,
+    showModal: false,
   }
 
-  componentDidMount () {
+  componentDidMount() {
     changeCalendarNames()
-    this.changeMonthName()
-    document.getElementsByClassName('ant-radio-group-outline')[
-      0
-    ].style.display =
-      'none'
+    this.changeDate(moment(Date.now()));
   }
 
-  changeMonthName = () => {
+  changeDate = value => {
     this.setState({
-      currentMonth: getMonthName().month,
-      currentYear: getMonthName().year
+      currentYear: value.year(),
+      currentMonth: value.month() + 1,
+      currentDate: value.date(),
+      selectedDate: value.format("MM-DD-YYYY"),
     })
   }
 
-  render () {
-    const { currentMonth, currentYear } = this.state
+  toggleModal = bool => {
+    this.setState({ showModal: bool })
+  }
 
+  render() {
+    const { currentMonth, currentYear, showModal, selectedDate } = this.state
+    // console.log(showModal)
     return (
       <div>
         <h1>
-          <span>{currentMonth}</span>
+          <span>{monthNames[currentMonth - 1]}</span>
           <span>{currentYear}</span>
         </h1>
+        <EventsModal
+          visible={showModal}
+          toggleModal={this.toggleModal}
+          selectedDate={selectedDate}
+        />
         <Calendar
-          onChange={() => setTimeout(() => this.changeMonthName(), 0)}
+          onChange={e => this.changeDate(e)}
+          onSelect={e => (this.changeDate(e), this.toggleModal(true))}
         />
       </div>
     )

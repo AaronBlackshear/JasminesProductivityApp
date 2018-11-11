@@ -106,12 +106,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! antd */ "antd");
 /* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(antd__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "axios");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _css_calendar_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../css/calendar.css */ "./css/calendar.css");
-/* harmony import */ var _css_calendar_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_css_calendar_css__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _utils_changeCalendarNames__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/changeCalendarNames */ "./utils/changeCalendarNames.js");
-/* harmony import */ var _utils_getMonthName__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/getMonthName */ "./utils/getMonthName.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! moment */ "moment");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _CalendarComponents_EventsModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CalendarComponents/EventsModal */ "./components/CalendarComponents/EventsModal.js");
+/* harmony import */ var _css_calendar_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../css/calendar.css */ "./css/calendar.css");
+/* harmony import */ var _css_calendar_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_css_calendar_css__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _utils_changeCalendarNames__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/changeCalendarNames */ "./utils/changeCalendarNames.js");
 var _jsxFileName = "/Users/aaronblackshear/PersonalProjects/JasminesProductivityApp/components/Calendar.js";
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -140,6 +140,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 var CalendarComponent =
 /*#__PURE__*/
@@ -161,13 +162,24 @@ function (_Component) {
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "state", {
       currentYear: null,
-      currentMonth: null
+      currentMonth: null,
+      currentDate: null,
+      selectedDate: null,
+      showModal: false
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "changeMonthName", function () {
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "changeDate", function (value) {
       _this.setState({
-        currentMonth: Object(_utils_getMonthName__WEBPACK_IMPORTED_MODULE_5__["default"])().month,
-        currentYear: Object(_utils_getMonthName__WEBPACK_IMPORTED_MODULE_5__["default"])().year
+        currentYear: value.year(),
+        currentMonth: value.month() + 1,
+        currentDate: value.date(),
+        selectedDate: value.format("MM-DD-YYYY")
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "toggleModal", function (bool) {
+      _this.setState({
+        showModal: bool
       });
     });
 
@@ -177,9 +189,8 @@ function (_Component) {
   _createClass(CalendarComponent, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      Object(_utils_changeCalendarNames__WEBPACK_IMPORTED_MODULE_4__["default"])();
-      this.changeMonthName();
-      document.getElementsByClassName('ant-radio-group-outline')[0].style.display = 'none';
+      Object(_utils_changeCalendarNames__WEBPACK_IMPORTED_MODULE_5__["default"])();
+      this.changeDate(moment__WEBPACK_IMPORTED_MODULE_2___default()(Date.now()));
     }
   }, {
     key: "render",
@@ -188,40 +199,53 @@ function (_Component) {
 
       var _this$state = this.state,
           currentMonth = _this$state.currentMonth,
-          currentYear = _this$state.currentYear;
+          currentYear = _this$state.currentYear,
+          showModal = _this$state.showModal,
+          selectedDate = _this$state.selectedDate; // console.log(showModal)
+
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 34
+          lineNumber: 54
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 35
+          lineNumber: 55
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 36
+          lineNumber: 56
         },
         __self: this
-      }, currentMonth), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      }, monthNames[currentMonth - 1]), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 37
+          lineNumber: 57
         },
         __self: this
-      }, currentYear)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(antd__WEBPACK_IMPORTED_MODULE_1__["Calendar"], {
-        onChange: function onChange() {
-          return setTimeout(function () {
-            return _this2.changeMonthName();
-          }, 0);
+      }, currentYear)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CalendarComponents_EventsModal__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        visible: showModal,
+        toggleModal: this.toggleModal,
+        selectedDate: selectedDate,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 59
+        },
+        __self: this
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(antd__WEBPACK_IMPORTED_MODULE_1__["Calendar"], {
+        onChange: function onChange(e) {
+          return _this2.changeDate(e);
+        },
+        onSelect: function onSelect(e) {
+          return _this2.changeDate(e), _this2.toggleModal(true);
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 39
+          lineNumber: 64
         },
         __self: this
       }));
@@ -235,76 +259,21 @@ function (_Component) {
 
 /***/ }),
 
-/***/ "./components/LoadingScreen.js":
-/*!*************************************!*\
-  !*** ./components/LoadingScreen.js ***!
-  \*************************************/
+/***/ "./components/CalendarComponents/EventsModal.js":
+/*!******************************************************!*\
+  !*** ./components/CalendarComponents/EventsModal.js ***!
+  \******************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return LoadingScreen; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return EventsModal; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! antd */ "antd");
 /* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(antd__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! styled-components */ "styled-components");
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(styled_components__WEBPACK_IMPORTED_MODULE_2__);
-var _jsxFileName = "/Users/aaronblackshear/PersonalProjects/JasminesProductivityApp/components/LoadingScreen.js";
-
-function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100vw;\n  height: 100vh;\n  position: absolute;\n  top: 0;\n  left: 0;\n  z-index: 100;\n\n  >div .antspin {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translate(-50%, -50%);\n  }\n"]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
-
-function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-
-
-
-
-var LoadingContainer = styled_components__WEBPACK_IMPORTED_MODULE_2___default.a.div(_templateObject());
-function LoadingScreen() {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(LoadingContainer, {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 26
-    },
-    __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(antd__WEBPACK_IMPORTED_MODULE_1__["Spin"], {
-    size: "large",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 27
-    },
-    __self: this
-  }));
-}
-
-/***/ }),
-
-/***/ "./components/LoginForm.js":
-/*!*********************************!*\
-  !*** ./components/LoginForm.js ***!
-  \*********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! antd */ "antd");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(antd__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "react-redux");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _redux_reducers_userReducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../redux/reducers/userReducer */ "./redux/reducers/userReducer.js");
-var _jsxFileName = "/Users/aaronblackshear/PersonalProjects/JasminesProductivityApp/components/LoginForm.js";
+var _jsxFileName = "/Users/aaronblackshear/PersonalProjects/JasminesProductivityApp/components/CalendarComponents/EventsModal.js";
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -316,178 +285,57 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
-
-
-var FormItem = antd__WEBPACK_IMPORTED_MODULE_1__["Form"].Item;
-
-var LoginForm =
+var EventsModal =
 /*#__PURE__*/
 function (_Component) {
-  _inherits(LoginForm, _Component);
+  _inherits(EventsModal, _Component);
 
-  function LoginForm() {
-    var _getPrototypeOf2;
+  function EventsModal() {
+    _classCallCheck(this, EventsModal);
 
-    var _this;
-
-    _classCallCheck(this, LoginForm);
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(LoginForm)).call.apply(_getPrototypeOf2, [this].concat(args)));
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "state", {
-      email: '',
-      password: '',
-      remember: false
-    });
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleUserInput", function (state, input) {
-      _this.setState(_defineProperty({}, state, input));
-    });
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleCheckbox", function () {
-      _this.setState(function (prevProps) {
-        return {
-          remember: !prevProps.remember
-        };
-      });
-    });
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleSubmit", function () {
-      var dispatch = _this.props.dispatch;
-      var _this$state = _this.state,
-          email = _this$state.email,
-          password = _this$state.password;
-      dispatch(Object(_redux_reducers_userReducer__WEBPACK_IMPORTED_MODULE_3__["loginUser"])(email, password));
-    });
-
-    return _this;
+    return _possibleConstructorReturn(this, _getPrototypeOf(EventsModal).apply(this, arguments));
   }
 
-  _createClass(LoginForm, [{
+  _createClass(EventsModal, [{
     key: "render",
     value: function render() {
-      var _this2 = this;
-
-      var _this$state2 = this.state,
-          email = _this$state2.email,
-          password = _this$state2.password,
-          remember = _this$state2.remember;
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "login-container",
+      var _this$props = this.props,
+          toggleModal = _this$props.toggleModal,
+          visible = _this$props.visible,
+          selectedDate = _this$props.selectedDate;
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(antd__WEBPACK_IMPORTED_MODULE_1__["Modal"], {
+        centered: true,
+        visible: visible,
+        onOk: function onOk() {
+          return toggleModal(false);
+        },
+        onCancel: function onCancel() {
+          return toggleModal(false);
+        },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 33
+          lineNumber: 9
         },
         __self: this
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(antd__WEBPACK_IMPORTED_MODULE_1__["Form"], {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 34
-        },
-        __self: this
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(FormItem, {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 35
-        },
-        __self: this
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(antd__WEBPACK_IMPORTED_MODULE_1__["Input"], {
-        type: "email",
-        onChange: function onChange(e) {
-          return _this2.handleUserInput('email', e.target.value);
-        },
-        placeholder: "Email",
-        value: email,
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 36
-        },
-        __self: this
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(FormItem, {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 44
-        },
-        __self: this
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(antd__WEBPACK_IMPORTED_MODULE_1__["Input"], {
-        type: "password",
-        onChange: function onChange(e) {
-          return _this2.handleUserInput('password', e.target.value);
-        },
-        placeholder: "Password",
-        value: password,
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 45
-        },
-        __self: this
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(FormItem, {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 53
-        },
-        __self: this
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(antd__WEBPACK_IMPORTED_MODULE_1__["Checkbox"], {
-        onClick: this.handleCheckbox,
-        checked: remember,
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 54
-        },
-        __self: this
-      }, "Remember me?")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(FormItem, {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 59
-        },
-        __self: this
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(antd__WEBPACK_IMPORTED_MODULE_1__["Button"], {
-        type: "primary",
-        onClick: this.handleSubmit,
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 60
-        },
-        __self: this
-      }, "Log In"))));
+      }, selectedDate);
     }
   }]);
 
-  return LoginForm;
+  return EventsModal;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
-var mapStateToProps = function mapStateToProps(state) {
-  return state;
-};
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps)(LoginForm));
-
-/***/ }),
-
-/***/ "./constants/months.json":
-/*!*******************************!*\
-  !*** ./constants/months.json ***!
-  \*******************************/
-/*! exports provided: Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec, default */
-/***/ (function(module) {
-
-module.exports = {"Jan":"January","Feb":"February","Mar":"March","Apr":"April","May":"May","Jun":"June","Jul":"July","Aug":"August","Sep":"September","Oct":"October","Nov":"November","Dec":"December"};
 
 /***/ }),
 
@@ -515,9 +363,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "react-redux");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _components_LoginForm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/LoginForm */ "./components/LoginForm.js");
-/* harmony import */ var _components_Calendar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Calendar */ "./components/Calendar.js");
-/* harmony import */ var _components_LoadingScreen__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/LoadingScreen */ "./components/LoadingScreen.js");
+/* harmony import */ var _components_Calendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Calendar */ "./components/Calendar.js");
 var _jsxFileName = "/Users/aaronblackshear/PersonalProjects/JasminesProductivityApp/pages/index.js";
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -530,17 +376,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
 
 
 
@@ -552,66 +394,24 @@ function (_Component) {
   _inherits(Index, _Component);
 
   function Index() {
-    var _getPrototypeOf2;
-
-    var _this;
-
     _classCallCheck(this, Index);
 
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Index)).call.apply(_getPrototypeOf2, [this].concat(args)));
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "state", {
-      user: {},
-      loggedIn: null
-    });
-
-    return _this;
+    return _possibleConstructorReturn(this, _getPrototypeOf(Index).apply(this, arguments));
   }
 
   _createClass(Index, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var user = JSON.parse(localStorage.getItem('user'));
-      user ? this.setState({
-        user: user,
-        loggedIn: false
-      }) : this.setState({
-        loggedIn: false
-      });
-    }
-  }, {
     key: "render",
     value: function render() {
-      var _this$state = this.state,
-          user = _this$state.user,
-          loggedIn = _this$state.loggedIn;
-      var auth = this.props.auth;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 25
+          lineNumber: 8
         },
         __self: this
-      }, loggedIn === null ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_LoadingScreen__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Calendar__WEBPACK_IMPORTED_MODULE_2__["default"], {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 28
-        },
-        __self: this
-      }) : auth.user && !user.authTokenOne && !auth.user.authTokenOne ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_LoginForm__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 32
-        },
-        __self: this
-      }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Calendar__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 33
+          lineNumber: 9
         },
         __self: this
       }));
@@ -628,84 +428,6 @@ var mapStateToProps = function mapStateToProps(state) {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps)(Index));
-
-/***/ }),
-
-/***/ "./redux/reducers/userReducer.js":
-/*!***************************************!*\
-  !*** ./redux/reducers/userReducer.js ***!
-  \***************************************/
-/*! exports provided: loginUser, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loginUser", function() { return loginUser; });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "axios");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-var base_url = 'http://localhost:3001/api';
-var initialState = {
-  user: {},
-  loggedIn: false,
-  loading: false
-};
-var LOGIN_USER = 'LOGIN_USER';
-
-function userReducer() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
-  var action = arguments.length > 1 ? arguments[1] : undefined;
-
-  switch (action.type) {
-    case "".concat(LOGIN_USER, "_PENDING"):
-      return _objectSpread({}, state, {
-        loading: true
-      });
-
-    case "".concat(LOGIN_USER, "_FULFILLED"):
-      // window.location.pathname = '/';
-      var _action$payload$data$ = action.payload.data[0],
-          username = _action$payload$data$.username,
-          email = _action$payload$data$.email,
-          password = _action$payload$data$.password,
-          authTokenOne = _action$payload$data$.authTokenOne,
-          authTokenTwo = _action$payload$data$.authTokenTwo,
-          userIdentifier = _action$payload$data$.userIdentifier,
-          emailVerified = _action$payload$data$.emailVerified;
-      localStorage.setItem('user', JSON.stringify({
-        username: username,
-        email: email,
-        password: password,
-        authTokenOne: authTokenOne,
-        authTokenTwo: authTokenTwo,
-        userIdentifier: userIdentifier,
-        emailVerified: emailVerified
-      }));
-      return _objectSpread({}, state, {
-        user: action.payload.data[0],
-        loading: false,
-        loggedIn: true
-      });
-
-    default:
-      return _objectSpread({}, state);
-  }
-}
-
-var loginUser = function loginUser(username, password) {
-  return {
-    type: LOGIN_USER,
-    payload: axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(base_url + '/login_user', {
-      username: username,
-      password: password
-    })
-  };
-};
-/* harmony default export */ __webpack_exports__["default"] = (userReducer);
 
 /***/ }),
 
@@ -732,32 +454,6 @@ var changeCalendarNames = function changeCalendarNames() {
 
 /***/ }),
 
-/***/ "./utils/getMonthName.js":
-/*!*******************************!*\
-  !*** ./utils/getMonthName.js ***!
-  \*******************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _constants_months_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/months.json */ "./constants/months.json");
-var _constants_months_json__WEBPACK_IMPORTED_MODULE_0___namespace = /*#__PURE__*/__webpack_require__.t(/*! ../constants/months.json */ "./constants/months.json", 1);
-
-
-var getMonthName = function getMonthName() {
-  var year = document.getElementsByClassName('ant-select-selection-selected-value')[0].innerHTML;
-  var abbr = document.getElementsByClassName('ant-select-selection-selected-value')[1].innerHTML;
-  return {
-    month: _constants_months_json__WEBPACK_IMPORTED_MODULE_0__[abbr],
-    year: year
-  };
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (getMonthName);
-
-/***/ }),
-
 /***/ 3:
 /*!******************************!*\
   !*** multi ./pages/index.js ***!
@@ -781,14 +477,14 @@ module.exports = require("antd");
 
 /***/ }),
 
-/***/ "axios":
-/*!************************!*\
-  !*** external "axios" ***!
-  \************************/
+/***/ "moment":
+/*!*************************!*\
+  !*** external "moment" ***!
+  \*************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = require("axios");
+module.exports = require("moment");
 
 /***/ }),
 
@@ -811,17 +507,6 @@ module.exports = require("react");
 /***/ (function(module, exports) {
 
 module.exports = require("react-redux");
-
-/***/ }),
-
-/***/ "styled-components":
-/*!************************************!*\
-  !*** external "styled-components" ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("styled-components");
 
 /***/ })
 

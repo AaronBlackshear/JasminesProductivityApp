@@ -14,7 +14,7 @@ function userReducer (state = initialState, action) {
     case `${LOGIN_USER}_PENDING`:
       return { ...state, loading: true }
     case `${LOGIN_USER}_FULFILLED`:
-      // window.location.pathname = '/';
+      window.location.href = '/'
       const { 
         username,
         email,
