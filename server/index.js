@@ -9,6 +9,7 @@ const PORT = 3001
 const app = express()
 
 const userCtrl = require('./controllers/user_controller')
+const calendarCtrl = require('./controllers/calender_controller')
 const { SESSION_SECRET, DATABASE_URL } = process.env
 
 app.use(json())
@@ -30,6 +31,7 @@ app.use(
 )
 
 app.post('/api/login_user', userCtrl.loginUser)
+app.post('/api/add_event', calendarCtrl.addEvent)
 
 app.listen(PORT, () =>
   console.log(`Listening on port ${PORT || 'Port Not Defined'}!`)

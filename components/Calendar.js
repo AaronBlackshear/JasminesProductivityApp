@@ -42,6 +42,9 @@ class CalendarComponent extends Component {
       selectedDate: value.format("MM-DD-YYYY"),
     })
   }
+  addEvent = () => {
+    console.log('Event Added!')
+  }
 
   toggleModal = bool => {
     this.setState({ showModal: bool })
@@ -49,7 +52,7 @@ class CalendarComponent extends Component {
 
   render() {
     const { currentMonth, currentYear, showModal, selectedDate } = this.state
-    // console.log(showModal)
+
     return (
       <div>
         <h1>
@@ -60,6 +63,7 @@ class CalendarComponent extends Component {
           visible={showModal}
           toggleModal={this.toggleModal}
           selectedDate={selectedDate}
+          addEvent={this.addEvent}
         />
         <Calendar
           onChange={e => this.changeDate(e)}
