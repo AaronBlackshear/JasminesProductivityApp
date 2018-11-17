@@ -21216,4 +21216,8 @@ li.ant-tree-treenode-disabled > .ant-tree-node-content-wrapper:hover {
     background-size: cover !important;
 }
 
+.events {
+    list-style: none;
+}
+
 /*# sourceMappingURL=styles.chunk.css.map*/

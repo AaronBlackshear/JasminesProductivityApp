@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Calendar } from 'antd'
+import { Calendar, Badge } from 'antd'
 import moment from 'moment';
 import EventsModal from './CalendarComponents/EventsModal'
 import '../css/calendar.css'
 import changeCalendarNames from '../utils/changeCalendarNames'
+import { getAllEvents } from '../redux/reducers/calendarReducer'
+import setCalendarEvents from "../utils/setCalendarEvents";
 
 const monthNames = [
   "January",
@@ -31,8 +33,11 @@ class CalendarComponent extends Component {
   }
 
   componentDidMount() {
+    const { dispatch } = this.props;
+    const currentUser = JSON.parse(localStorage.getItem('user'));
     changeCalendarNames()
     this.changeDate(moment(Date.now()));
+    dispatch(getAllEvents(currentUser.userIdentifier))
   }
 
   changeDate = value => {
@@ -52,9 +57,23 @@ class CalendarComponent extends Component {
     const { currentMonth, currentYear, showModal, selectedDate } = this.state
     const { calendar, dispatch } = this.props;
 
-    if (calendar.events[0]) {
-      console.log(currentMonth)
-      console.log(moment(calendar.events[0].event_date).format('MM'))
+    const dateCellRender = value => {
+      const dateEvents =
+        setCalendarEvents(value, calendar.events, currentMonth);
+      
+        if (dateEvents) {
+          return (
+            <ul className="events">
+              {
+                dateEvents.map(event => (
+                  <li key={event.id}>
+                    <Badge status="success" text={event.event_body} />
+                  </li>
+                ))
+              }
+            </ul>
+          )
+        }
     }
 
     return (
@@ -69,6 +88,7 @@ class CalendarComponent extends Component {
           selectedDate={selectedDate}
         />
         <Calendar
+          dateCellRender={dateCellRender}
           onChange={e => this.changeDate(e)}
           onSelect={e => (this.changeDate(e), this.toggleModal(true))}
         />

@@ -31,6 +31,7 @@ app.use(
 )
 
 app.post('/api/login_user', userCtrl.loginUser)
+app.get('/api/get_events', calendarCtrl.getEvents)
 app.post('/api/add_event', calendarCtrl.addEvent)
 
 app.listen(PORT, () =>

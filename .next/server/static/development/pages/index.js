@@ -114,6 +114,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _css_calendar_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../css/calendar.css */ "./css/calendar.css");
 /* harmony import */ var _css_calendar_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_css_calendar_css__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _utils_changeCalendarNames__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/changeCalendarNames */ "./utils/changeCalendarNames.js");
+/* harmony import */ var _redux_reducers_calendarReducer__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../redux/reducers/calendarReducer */ "./redux/reducers/calendarReducer.js");
+/* harmony import */ var _utils_setCalendarEvents__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../utils/setCalendarEvents */ "./utils/setCalendarEvents.js");
 var _jsxFileName = "/Users/aaronblackshear/PersonalProjects/JasminesProductivityApp/components/Calendar.js";
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -135,6 +137,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
 
 
 
@@ -192,8 +196,11 @@ function (_Component) {
   _createClass(CalendarComponent, [{
     key: "componentDidMount",
     value: function componentDidMount() {
+      var dispatch = this.props.dispatch;
+      var currentUser = JSON.parse(localStorage.getItem('user'));
       Object(_utils_changeCalendarNames__WEBPACK_IMPORTED_MODULE_6__["default"])();
       this.changeDate(moment__WEBPACK_IMPORTED_MODULE_3___default()(Date.now()));
+      dispatch(Object(_redux_reducers_calendarReducer__WEBPACK_IMPORTED_MODULE_7__["getAllEvents"])(currentUser.userIdentifier));
     }
   }, {
     key: "render",
@@ -209,33 +216,60 @@ function (_Component) {
           calendar = _this$props.calendar,
           dispatch = _this$props.dispatch;
 
-      if (calendar.events[0]) {
-        console.log(currentMonth);
-        console.log(moment__WEBPACK_IMPORTED_MODULE_3___default()(calendar.events[0].event_date).format('MM'));
-      }
+      var dateCellRender = function dateCellRender(value) {
+        var dateEvents = Object(_utils_setCalendarEvents__WEBPACK_IMPORTED_MODULE_8__["default"])(value, calendar.events, currentMonth);
+
+        if (dateEvents) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+            className: "events",
+            __source: {
+              fileName: _jsxFileName,
+              lineNumber: 66
+            },
+            __self: this
+          }, dateEvents.map(function (event) {
+            return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+              key: event.id,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 69
+              },
+              __self: this
+            }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(antd__WEBPACK_IMPORTED_MODULE_2__["Badge"], {
+              status: "success",
+              text: event.event_body,
+              __source: {
+                fileName: _jsxFileName,
+                lineNumber: 70
+              },
+              __self: this
+            }));
+          }));
+        }
+      };
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 61
+          lineNumber: 80
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 62
+          lineNumber: 81
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 63
+          lineNumber: 82
         },
         __self: this
       }, monthNames[currentMonth - 1]), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 64
+          lineNumber: 83
         },
         __self: this
       }, currentYear)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CalendarComponents_EventsModal__WEBPACK_IMPORTED_MODULE_4__["default"], {
@@ -244,10 +278,11 @@ function (_Component) {
         selectedDate: selectedDate,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 66
+          lineNumber: 85
         },
         __self: this
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(antd__WEBPACK_IMPORTED_MODULE_2__["Calendar"], {
+        dateCellRender: dateCellRender,
         onChange: function onChange(e) {
           return _this2.changeDate(e);
         },
@@ -256,7 +291,7 @@ function (_Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 71
+          lineNumber: 90
         },
         __self: this
       }));
@@ -762,12 +797,13 @@ var mapStateToProps = function mapStateToProps(state) {
 /*!*******************************************!*\
   !*** ./redux/reducers/calendarReducer.js ***!
   \*******************************************/
-/*! exports provided: addCalendarBackground, addEvent, default */
+/*! exports provided: addCalendarBackground, getAllEvents, addEvent, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addCalendarBackground", function() { return addCalendarBackground; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAllEvents", function() { return getAllEvents; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addEvent", function() { return addEvent; });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "axios");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
@@ -782,6 +818,7 @@ var initialState = {
   events: []
 };
 var ADD_CALENDAR_BACKGROUND = 'ADD_CALENDAR_BACKGROUND';
+var GET_EVENTS = 'GET_EVENTS';
 var ADD_EVENT = 'ADD_EVENT';
 
 function userReducer() {
@@ -797,10 +834,15 @@ function userReducer() {
         calendarBackgroundImages: _objectSpread({}, state.calendarBackgroundImages, _defineProperty({}, date, image))
       });
 
-    case "".concat(ADD_EVENT, "_FULFILLED"):
-      var data = action.payload.data;
+    case "".concat(GET_EVENTS, "_FULFILLED"):
       return _objectSpread({}, state, {
-        events: data
+        events: action.payload.data
+      });
+
+    case "".concat(ADD_EVENT, "_FULFILLED"):
+      console.log('HIT');
+      return _objectSpread({}, state, {
+        events: action.payload.data
       });
 
     default:
@@ -815,6 +857,16 @@ var addCalendarBackground = function addCalendarBackground(date, image) {
       date: date,
       image: image
     }
+  };
+};
+var getAllEvents = function getAllEvents(userID) {
+  return {
+    type: GET_EVENTS,
+    payload: axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("".concat(base_url, "/get_events"), {
+      headers: {
+        userID: userID
+      }
+    })
   };
 };
 var addEvent = function addEvent(event, category, date, startTime, endTime) {
@@ -860,6 +912,35 @@ var changeCalendarNames = function changeCalendarNames() {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (changeCalendarNames);
+
+/***/ }),
+
+/***/ "./utils/setCalendarEvents.js":
+/*!************************************!*\
+  !*** ./utils/setCalendarEvents.js ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "moment");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var setCalendarEvents = function setCalendarEvents(value, events, currentMonth) {
+  var filteredEvents = events.filter(function (event) {
+    return moment__WEBPACK_IMPORTED_MODULE_0___default()(event.event_date).date() === value.date();
+  });
+
+  if (filteredEvents[0]) {
+    if (moment__WEBPACK_IMPORTED_MODULE_0___default()(filteredEvents[0].event_date).month() + 1 === currentMonth && value.month() + 1 === currentMonth && value.year() === moment__WEBPACK_IMPORTED_MODULE_0___default()(filteredEvents[0].event_date).year()) {
+      return filteredEvents;
+    }
+  }
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (setCalendarEvents);
 
 /***/ }),
 

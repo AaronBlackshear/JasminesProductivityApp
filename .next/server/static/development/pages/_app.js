@@ -1237,12 +1237,13 @@ function (_App) {
 /*!*******************************************!*\
   !*** ./redux/reducers/calendarReducer.js ***!
   \*******************************************/
-/*! exports provided: addCalendarBackground, addEvent, default */
+/*! exports provided: addCalendarBackground, getAllEvents, addEvent, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addCalendarBackground", function() { return addCalendarBackground; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAllEvents", function() { return getAllEvents; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addEvent", function() { return addEvent; });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "axios");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
@@ -1257,6 +1258,7 @@ var initialState = {
   events: []
 };
 var ADD_CALENDAR_BACKGROUND = 'ADD_CALENDAR_BACKGROUND';
+var GET_EVENTS = 'GET_EVENTS';
 var ADD_EVENT = 'ADD_EVENT';
 
 function userReducer() {
@@ -1272,10 +1274,15 @@ function userReducer() {
         calendarBackgroundImages: _objectSpread({}, state.calendarBackgroundImages, _defineProperty({}, date, image))
       });
 
-    case "".concat(ADD_EVENT, "_FULFILLED"):
-      var data = action.payload.data;
+    case "".concat(GET_EVENTS, "_FULFILLED"):
       return _objectSpread({}, state, {
-        events: data
+        events: action.payload.data
+      });
+
+    case "".concat(ADD_EVENT, "_FULFILLED"):
+      console.log('HIT');
+      return _objectSpread({}, state, {
+        events: action.payload.data
       });
 
     default:
@@ -1290,6 +1297,16 @@ var addCalendarBackground = function addCalendarBackground(date, image) {
       date: date,
       image: image
     }
+  };
+};
+var getAllEvents = function getAllEvents(userID) {
+  return {
+    type: GET_EVENTS,
+    payload: axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("".concat(base_url, "/get_events"), {
+      headers: {
+        userID: userID
+      }
+    })
   };
 };
 var addEvent = function addEvent(event, category, date, startTime, endTime) {

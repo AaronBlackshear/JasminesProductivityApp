@@ -7,6 +7,7 @@ const initialState = {
 }
 
 const ADD_CALENDAR_BACKGROUND = 'ADD_CALENDAR_BACKGROUND'
+const GET_EVENTS = 'GET_EVENTS'
 const ADD_EVENT = 'ADD_EVENT'
 
 function userReducer(state = initialState, action) {
@@ -21,9 +22,12 @@ function userReducer(state = initialState, action) {
         }
       };
 
+    case `${GET_EVENTS}_FULFILLED`:
+      return { ...state, events: action.payload.data }
+
     case `${ADD_EVENT}_FULFILLED`:
-      const { data } = action.payload;
-      return { ...state, events: data };
+      console.log('HIT')
+      return { ...state, events: action.payload.data }
 
     default:
       return { ...state }
@@ -34,6 +38,13 @@ export const addCalendarBackground = (date, image) => {
   return {
     type: ADD_CALENDAR_BACKGROUND,
     payload: { date, image },
+  }
+}
+
+export const getAllEvents = userID => {
+  return {
+    type: GET_EVENTS,
+    payload: axios.get(`${base_url}/get_events`, { headers: { userID } })
   }
 }
 
@@ -49,12 +60,12 @@ export const addEvent = (event, category, date, startTime, endTime) => {
       startTime,
       endTime,
     }, {
-      headers: {
-        email: localUser.email,
-        password: localUser.password,
-        authToken: localUser.authTokenOne,
-      },
-    }),
+        headers: {
+          email: localUser.email,
+          password: localUser.password,
+          authToken: localUser.authTokenOne,
+        },
+      }),
   }
 }
 
