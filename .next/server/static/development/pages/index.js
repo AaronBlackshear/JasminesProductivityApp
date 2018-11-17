@@ -104,14 +104,16 @@ module.exports =
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! antd */ "antd");
-/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(antd__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! moment */ "moment");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _CalendarComponents_EventsModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./CalendarComponents/EventsModal */ "./components/CalendarComponents/EventsModal.js");
-/* harmony import */ var _css_calendar_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../css/calendar.css */ "./css/calendar.css");
-/* harmony import */ var _css_calendar_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_css_calendar_css__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _utils_changeCalendarNames__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/changeCalendarNames */ "./utils/changeCalendarNames.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "react-redux");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! antd */ "antd");
+/* harmony import */ var antd__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(antd__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! moment */ "moment");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _CalendarComponents_EventsModal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./CalendarComponents/EventsModal */ "./components/CalendarComponents/EventsModal.js");
+/* harmony import */ var _css_calendar_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../css/calendar.css */ "./css/calendar.css");
+/* harmony import */ var _css_calendar_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_css_calendar_css__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _utils_changeCalendarNames__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/changeCalendarNames */ "./utils/changeCalendarNames.js");
 var _jsxFileName = "/Users/aaronblackshear/PersonalProjects/JasminesProductivityApp/components/Calendar.js";
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -133,6 +135,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -177,10 +180,6 @@ function (_Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "addEvent", function () {
-      console.log('Event Added!');
-    });
-
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "toggleModal", function (bool) {
       _this.setState({
         showModal: bool
@@ -193,8 +192,8 @@ function (_Component) {
   _createClass(CalendarComponent, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      Object(_utils_changeCalendarNames__WEBPACK_IMPORTED_MODULE_5__["default"])();
-      this.changeDate(moment__WEBPACK_IMPORTED_MODULE_2___default()(Date.now()));
+      Object(_utils_changeCalendarNames__WEBPACK_IMPORTED_MODULE_6__["default"])();
+      this.changeDate(moment__WEBPACK_IMPORTED_MODULE_3___default()(Date.now()));
     }
   }, {
     key: "render",
@@ -206,41 +205,49 @@ function (_Component) {
           currentYear = _this$state.currentYear,
           showModal = _this$state.showModal,
           selectedDate = _this$state.selectedDate;
+      var _this$props = this.props,
+          calendar = _this$props.calendar,
+          dispatch = _this$props.dispatch;
+
+      if (calendar.events[0]) {
+        console.log(currentMonth);
+        console.log(moment__WEBPACK_IMPORTED_MODULE_3___default()(calendar.events[0].event_date).format('MM'));
+      }
+
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 57
+          lineNumber: 61
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 58
+          lineNumber: 62
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 59
+          lineNumber: 63
         },
         __self: this
       }, monthNames[currentMonth - 1]), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 60
+          lineNumber: 64
         },
         __self: this
-      }, currentYear)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CalendarComponents_EventsModal__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }, currentYear)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CalendarComponents_EventsModal__WEBPACK_IMPORTED_MODULE_4__["default"], {
         visible: showModal,
         toggleModal: this.toggleModal,
         selectedDate: selectedDate,
-        addEvent: this.addEvent,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 62
+          lineNumber: 66
         },
         __self: this
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(antd__WEBPACK_IMPORTED_MODULE_1__["Calendar"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(antd__WEBPACK_IMPORTED_MODULE_2__["Calendar"], {
         onChange: function onChange(e) {
           return _this2.changeDate(e);
         },
@@ -249,7 +256,7 @@ function (_Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 68
+          lineNumber: 71
         },
         __self: this
       }));
@@ -259,7 +266,13 @@ function (_Component) {
   return CalendarComponent;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
-/* harmony default export */ __webpack_exports__["default"] = (CalendarComponent);
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    calendar: state.calendarReducer
+  };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps)(CalendarComponent));
 
 /***/ }),
 
@@ -460,7 +473,7 @@ function (_Component) {
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(antd__WEBPACK_IMPORTED_MODULE_1__["TimePicker"], {
         onChange: function onChange(e) {
-          return _this2.handleInput('date', moment__WEBPACK_IMPORTED_MODULE_4___default()(e).format('HH:mm:ss'));
+          return _this2.handleInput('startTime', moment__WEBPACK_IMPORTED_MODULE_4___default()(e).format('HH:mm:ss'));
         },
         __source: {
           fileName: _jsxFileName,
@@ -469,7 +482,7 @@ function (_Component) {
         __self: this
       }), "-", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(antd__WEBPACK_IMPORTED_MODULE_1__["TimePicker"], {
         onChange: function onChange(e) {
-          return _this2.handleInput('date', moment__WEBPACK_IMPORTED_MODULE_4___default()(e).format('HH:mm:ss'));
+          return _this2.handleInput('endTime', moment__WEBPACK_IMPORTED_MODULE_4___default()(e).format('HH:mm:ss'));
         },
         __source: {
           fileName: _jsxFileName,
@@ -598,9 +611,7 @@ function (_Component) {
 
       var _this$props = this.props,
           toggleModal = _this$props.toggleModal,
-          visible = _this$props.visible,
-          selectedDate = _this$props.selectedDate,
-          addEvent = _this$props.addEvent;
+          visible = _this$props.visible;
       var showEventForm = this.state.showEventForm;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(antd__WEBPACK_IMPORTED_MODULE_1__["Modal"], {
         centered: true,
@@ -767,7 +778,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var base_url = 'http://localhost:3001/api';
 var initialState = {
-  calendarBackgroundImages: {}
+  calendarBackgroundImages: {},
+  events: []
 };
 var ADD_CALENDAR_BACKGROUND = 'ADD_CALENDAR_BACKGROUND';
 var ADD_EVENT = 'ADD_EVENT';
@@ -777,7 +789,7 @@ function userReducer() {
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
   switch (action.type) {
-    case "ADD_CALENDAR_BACKGROUND":
+    case ADD_CALENDAR_BACKGROUND:
       var _action$payload = action.payload,
           date = _action$payload.date,
           image = _action$payload.image;
@@ -785,8 +797,11 @@ function userReducer() {
         calendarBackgroundImages: _objectSpread({}, state.calendarBackgroundImages, _defineProperty({}, date, image))
       });
 
-    case "ADD_EVENT":
-      return _objectSpread({}, state);
+    case "".concat(ADD_EVENT, "_FULFILLED"):
+      var data = action.payload.data;
+      return _objectSpread({}, state, {
+        events: data
+      });
 
     default:
       return _objectSpread({}, state);
@@ -803,7 +818,7 @@ var addCalendarBackground = function addCalendarBackground(date, image) {
   };
 };
 var addEvent = function addEvent(event, category, date, startTime, endTime) {
-  console.log(event, category, date, startTime, endTime);
+  var localUser = JSON.parse(localStorage.getItem('user'));
   return {
     type: ADD_EVENT,
     payload: axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("".concat(base_url, "/add_event"), {
@@ -812,6 +827,12 @@ var addEvent = function addEvent(event, category, date, startTime, endTime) {
       date: date,
       startTime: startTime,
       endTime: endTime
+    }, {
+      headers: {
+        email: localUser.email,
+        password: localUser.password,
+        authToken: localUser.authTokenOne
+      }
     })
   };
 };

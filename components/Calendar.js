@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Calendar } from 'antd'
 import moment from 'moment';
 import EventsModal from './CalendarComponents/EventsModal'
@@ -42,9 +43,6 @@ class CalendarComponent extends Component {
       selectedDate: value.format("MM-DD-YYYY"),
     })
   }
-  addEvent = () => {
-    console.log('Event Added!')
-  }
 
   toggleModal = bool => {
     this.setState({ showModal: bool })
@@ -52,6 +50,12 @@ class CalendarComponent extends Component {
 
   render() {
     const { currentMonth, currentYear, showModal, selectedDate } = this.state
+    const { calendar, dispatch } = this.props;
+
+    if (calendar.events[0]) {
+      console.log(currentMonth)
+      console.log(moment(calendar.events[0].event_date).format('MM'))
+    }
 
     return (
       <div>
@@ -63,7 +67,6 @@ class CalendarComponent extends Component {
           visible={showModal}
           toggleModal={this.toggleModal}
           selectedDate={selectedDate}
-          addEvent={this.addEvent}
         />
         <Calendar
           onChange={e => this.changeDate(e)}
@@ -74,4 +77,6 @@ class CalendarComponent extends Component {
   }
 }
 
-export default CalendarComponent
+const mapStateToProps = state => ({ calendar: state.calendarReducer });
+
+export default connect(mapStateToProps)(CalendarComponent);

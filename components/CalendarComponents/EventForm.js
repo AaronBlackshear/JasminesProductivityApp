@@ -62,11 +62,11 @@ class EventForm extends Component {
             />
             <span>
               <TimePicker
-                onChange={e => this.handleInput('date', moment(e).format('HH:mm:ss'))}
+                onChange={e => this.handleInput('startTime', moment(e).format('HH:mm:ss'))}
               />
               -
               <TimePicker
-                onChange={e => this.handleInput('date', moment(e).format('HH:mm:ss'))}
+                onChange={e => this.handleInput('endTime', moment(e).format('HH:mm:ss'))}
               />
             </span>
           </div>

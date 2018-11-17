@@ -12,7 +12,7 @@ export default class EventsModal extends Component {
   }
 
   render() {
-    const { toggleModal, visible, selectedDate, addEvent } = this.props;
+    const { toggleModal, visible, } = this.props;
     const { showEventForm } = this.state;
 
     return (
