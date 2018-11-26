@@ -1237,7 +1237,7 @@ function (_App) {
 /*!*******************************************!*\
   !*** ./redux/reducers/calendarReducer.js ***!
   \*******************************************/
-/*! exports provided: addCalendarBackground, getAllEvents, addEvent, default */
+/*! exports provided: addCalendarBackground, getAllEvents, addEvent, getCategories, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1245,6 +1245,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addCalendarBackground", function() { return addCalendarBackground; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAllEvents", function() { return getAllEvents; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addEvent", function() { return addEvent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCategories", function() { return getCategories; });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "axios");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
@@ -1255,11 +1256,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var base_url = 'http://localhost:3001/api';
 var initialState = {
   calendarBackgroundImages: {},
-  events: []
+  events: [],
+  categories: []
 };
 var ADD_CALENDAR_BACKGROUND = 'ADD_CALENDAR_BACKGROUND';
 var GET_EVENTS = 'GET_EVENTS';
 var ADD_EVENT = 'ADD_EVENT';
+var GET_CATEGORIES = 'GET_CATEGORIES';
 
 function userReducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
@@ -1280,9 +1283,13 @@ function userReducer() {
       });
 
     case "".concat(ADD_EVENT, "_FULFILLED"):
-      console.log('HIT');
       return _objectSpread({}, state, {
         events: action.payload.data
+      });
+
+    case "".concat(GET_CATEGORIES, "_FULFILLED"):
+      return _objectSpread({}, state, {
+        categories: action.payload.data
       });
 
     default:
@@ -1324,6 +1331,16 @@ var addEvent = function addEvent(event, category, date, startTime, endTime) {
         email: localUser.email,
         password: localUser.password,
         authToken: localUser.authTokenOne
+      }
+    })
+  };
+};
+var getCategories = function getCategories(user_id) {
+  return {
+    type: GET_CATEGORIES,
+    payload: axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("".concat(base_url, "/get_categories"), {
+      headers: {
+        user_id: user_id
       }
     })
   };

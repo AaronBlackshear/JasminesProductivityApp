@@ -5,7 +5,7 @@ import moment from 'moment';
 import EventsModal from './CalendarComponents/EventsModal'
 import '../css/calendar.css'
 import changeCalendarNames from '../utils/changeCalendarNames'
-import { getAllEvents } from '../redux/reducers/calendarReducer'
+import { getAllEvents, getCategories } from '../redux/reducers/calendarReducer'
 import setCalendarEvents from "../utils/setCalendarEvents";
 
 const monthNames = [
@@ -30,6 +30,7 @@ class CalendarComponent extends Component {
     currentDate: null,
     selectedDate: null,
     showModal: false,
+    categories: [],
   }
 
   componentDidMount() {
@@ -38,6 +39,7 @@ class CalendarComponent extends Component {
     changeCalendarNames()
     this.changeDate(moment(Date.now()));
     dispatch(getAllEvents(currentUser.userIdentifier))
+    dispatch(getCategories(currentUser.userIdentifier))
   }
 
   changeDate = value => {
@@ -55,7 +57,7 @@ class CalendarComponent extends Component {
 
   render() {
     const { currentMonth, currentYear, showModal, selectedDate } = this.state
-    const { calendar, dispatch } = this.props;
+    const { calendar } = this.props;
 
     const dateCellRender = value => {
       const dateEvents =
@@ -65,11 +67,17 @@ class CalendarComponent extends Component {
           return (
             <ul className="events">
               {
-                dateEvents.map(event => (
-                  <li key={event.id}>
-                    <Badge status="success" text={event.event_body} />
-                  </li>
-                ))
+                dateEvents.map(event => {
+                  let category = calendar.categories.find(category => (
+                    category.category_name === event.category
+                  ))
+
+                  return (
+                    <li key={event.id}>
+                      <Badge status={category ? category.color : 'success'} text={event.event_body} />
+                    </li>
+                  )
+                })
               }
             </ul>
           )

@@ -172,7 +172,8 @@ function (_Component) {
       currentMonth: null,
       currentDate: null,
       selectedDate: null,
-      showModal: false
+      showModal: false,
+      categories: []
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "changeDate", function (value) {
@@ -201,6 +202,7 @@ function (_Component) {
       Object(_utils_changeCalendarNames__WEBPACK_IMPORTED_MODULE_6__["default"])();
       this.changeDate(moment__WEBPACK_IMPORTED_MODULE_3___default()(Date.now()));
       dispatch(Object(_redux_reducers_calendarReducer__WEBPACK_IMPORTED_MODULE_7__["getAllEvents"])(currentUser.userIdentifier));
+      dispatch(Object(_redux_reducers_calendarReducer__WEBPACK_IMPORTED_MODULE_7__["getCategories"])(currentUser.userIdentifier));
     }
   }, {
     key: "render",
@@ -212,9 +214,7 @@ function (_Component) {
           currentYear = _this$state.currentYear,
           showModal = _this$state.showModal,
           selectedDate = _this$state.selectedDate;
-      var _this$props = this.props,
-          calendar = _this$props.calendar,
-          dispatch = _this$props.dispatch;
+      var calendar = this.props.calendar;
 
       var dateCellRender = function dateCellRender(value) {
         var dateEvents = Object(_utils_setCalendarEvents__WEBPACK_IMPORTED_MODULE_8__["default"])(value, calendar.events, currentMonth);
@@ -224,23 +224,26 @@ function (_Component) {
             className: "events",
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 66
+              lineNumber: 68
             },
             __self: this
           }, dateEvents.map(function (event) {
+            var category = calendar.categories.find(function (category) {
+              return category.category_name === event.category;
+            });
             return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
               key: event.id,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 69
+                lineNumber: 76
               },
               __self: this
             }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(antd__WEBPACK_IMPORTED_MODULE_2__["Badge"], {
-              status: "success",
+              status: category ? category.color : 'success',
               text: event.event_body,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 70
+                lineNumber: 77
               },
               __self: this
             }));
@@ -251,25 +254,25 @@ function (_Component) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 80
+          lineNumber: 88
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 81
+          lineNumber: 89
         },
         __self: this
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 82
+          lineNumber: 90
         },
         __self: this
       }, monthNames[currentMonth - 1]), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 83
+          lineNumber: 91
         },
         __self: this
       }, currentYear)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CalendarComponents_EventsModal__WEBPACK_IMPORTED_MODULE_4__["default"], {
@@ -278,7 +281,7 @@ function (_Component) {
         selectedDate: selectedDate,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 85
+          lineNumber: 93
         },
         __self: this
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(antd__WEBPACK_IMPORTED_MODULE_2__["Calendar"], {
@@ -291,7 +294,7 @@ function (_Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 90
+          lineNumber: 98
         },
         __self: this
       }));
@@ -797,7 +800,7 @@ var mapStateToProps = function mapStateToProps(state) {
 /*!*******************************************!*\
   !*** ./redux/reducers/calendarReducer.js ***!
   \*******************************************/
-/*! exports provided: addCalendarBackground, getAllEvents, addEvent, default */
+/*! exports provided: addCalendarBackground, getAllEvents, addEvent, getCategories, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -805,6 +808,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addCalendarBackground", function() { return addCalendarBackground; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAllEvents", function() { return getAllEvents; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addEvent", function() { return addEvent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCategories", function() { return getCategories; });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "axios");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
@@ -815,11 +819,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var base_url = 'http://localhost:3001/api';
 var initialState = {
   calendarBackgroundImages: {},
-  events: []
+  events: [],
+  categories: []
 };
 var ADD_CALENDAR_BACKGROUND = 'ADD_CALENDAR_BACKGROUND';
 var GET_EVENTS = 'GET_EVENTS';
 var ADD_EVENT = 'ADD_EVENT';
+var GET_CATEGORIES = 'GET_CATEGORIES';
 
 function userReducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
@@ -840,9 +846,13 @@ function userReducer() {
       });
 
     case "".concat(ADD_EVENT, "_FULFILLED"):
-      console.log('HIT');
       return _objectSpread({}, state, {
         events: action.payload.data
+      });
+
+    case "".concat(GET_CATEGORIES, "_FULFILLED"):
+      return _objectSpread({}, state, {
+        categories: action.payload.data
       });
 
     default:
@@ -884,6 +894,16 @@ var addEvent = function addEvent(event, category, date, startTime, endTime) {
         email: localUser.email,
         password: localUser.password,
         authToken: localUser.authTokenOne
+      }
+    })
+  };
+};
+var getCategories = function getCategories(user_id) {
+  return {
+    type: GET_CATEGORIES,
+    payload: axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("".concat(base_url, "/get_categories"), {
+      headers: {
+        user_id: user_id
       }
     })
   };

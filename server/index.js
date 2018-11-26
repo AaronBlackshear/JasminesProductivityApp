@@ -33,6 +33,7 @@ app.use(
 app.post('/api/login_user', userCtrl.loginUser)
 app.get('/api/get_events', calendarCtrl.getEvents)
 app.post('/api/add_event', calendarCtrl.addEvent)
+app.get('/api/get_categories', calendarCtrl.getCategories)
 
 app.listen(PORT, () =>
   console.log(`Listening on port ${PORT || 'Port Not Defined'}!`)

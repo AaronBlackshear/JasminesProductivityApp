@@ -4,11 +4,13 @@ const base_url = 'http://localhost:3001/api'
 const initialState = {
   calendarBackgroundImages: {},
   events: [],
+  categories: [],
 }
 
 const ADD_CALENDAR_BACKGROUND = 'ADD_CALENDAR_BACKGROUND'
 const GET_EVENTS = 'GET_EVENTS'
 const ADD_EVENT = 'ADD_EVENT'
+const GET_CATEGORIES = 'GET_CATEGORIES'
 
 function userReducer(state = initialState, action) {
   switch (action.type) {
@@ -26,8 +28,10 @@ function userReducer(state = initialState, action) {
       return { ...state, events: action.payload.data }
 
     case `${ADD_EVENT}_FULFILLED`:
-      console.log('HIT')
       return { ...state, events: action.payload.data }
+
+    case `${GET_CATEGORIES}_FULFILLED`:
+      return { ...state, categories: action.payload.data };
 
     default:
       return { ...state }
@@ -68,5 +72,12 @@ export const addEvent = (event, category, date, startTime, endTime) => {
       }),
   }
 }
+
+export const getCategories = user_id => {
+  return {
+    type: GET_CATEGORIES,
+    payload: axios.get(`${base_url}/get_categories`, { headers: { user_id } })
+  }
+};
 
 export default userReducer

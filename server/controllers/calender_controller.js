@@ -35,7 +35,20 @@ const addEvent = async (req, res) => {
   }
 };
 
+const getCategories = (req, res) => {
+  const db = req.app.get('db');
+  const { user_id } = req.headers;
+
+  db
+    .get_categories([user_id])
+    .then(response => res.status(200).json(response))
+    .catch(err => {
+      throw new Error(err)
+    })
+};
+
 module.exports = {
   getEvents,
   addEvent,
+  getCategories,
 }
